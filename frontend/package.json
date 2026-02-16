@@ -1,0 +1,78 @@
+{
+  "name": "eurosec-ai",
+  "private": true,
+  "version": "0.1.0",
+  "main": "electron/main.cjs",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5173 --strictPort",
+    "build": "vite build",
+    "preview": "vite preview --port 5173",
+    "electron": "electron ./electron/main.cjs",
+    "electron:prod": "npm run build && cross-env EUROSEC_FORCE_DIST=1 electron ./electron/main.cjs",
+    "pack:dir": "npm run build && npx electron-builder --dir",
+    "pack": "npm run build && npx electron-builder",
+    "pack:mac": "npm run build && npx electron-builder --mac",
+    "pack:win": "npm run build && npx electron-builder --win",
+    "pack:linux": "npm run build && npx electron-builder --linux",
+    "dev:all": "concurrently -k -n VITE,ELECTRON -c auto \"npm run dev\" \"wait-on http://127.0.0.1:5173 && npm run electron\""
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "electron": "^39.2.7",
+    "electron-builder": "^26.7.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "^7.2.4",
+    "wait-on": "^9.0.3"
+  },
+  "build": {
+    "appId": "com.eurosec.ai",
+    "productName": "EuroSec AI",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**",
+      "electron/**"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/backend",
+        "to": "backend",
+        "filter": ["**/*", "**/.*"]
+      }
+    ],
+    "asar": true,
+    "mac": {
+      "target": [
+        "dmg"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    }
+  }
+}
